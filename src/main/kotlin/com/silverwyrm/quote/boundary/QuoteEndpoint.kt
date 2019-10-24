@@ -54,15 +54,9 @@ open class QuoteEndpoint {
         return quoteDao.delete(id)
     }
 
-    @POST
-    @Path("/testdata")
-    fun genTestData(): Response {
-        val quotes = arrayOf(
-                Quote().apply { text="Ahhhaahah I bin so BRAIN!N!!" },
-                Quote().apply { text="Das Yoinkt den Yettel in den Bettel" }
-        )
-        quotes.forEach { quoteDao.add(it) }
-
-        return Response.ok("${quotes.size} Persons and ${quotes.size} Quotes added.").build()
+    @GET
+    @Path("/person/{id}")
+    fun getByPerson(@PathParam("id") personId: Long): List<Quote> {
+        return quoteDao.findWithPerson(personId)
     }
 }

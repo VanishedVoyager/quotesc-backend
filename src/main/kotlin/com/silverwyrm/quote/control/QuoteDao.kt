@@ -18,14 +18,16 @@ open class QuoteDao {
     }
 
     @Transactional
-    open fun add(Quote: Quote): Quote {
-        em.persist(Quote)
-        return Quote
+    open fun add(quote: Quote): Quote {
+        em.persist(quote)
+        em.flush()
+        em.refresh(quote)
+        return quote
     }
 
     @Transactional
-    open fun update(Quote: Quote): Quote {
-        return em.merge(Quote)
+    open fun update(quote: Quote): Quote {
+        return em.merge(quote)
     }
 
     @Transactional
@@ -33,5 +35,11 @@ open class QuoteDao {
         val toRemove = em.find(Quote::class.java, taskId)
         em.remove(toRemove)
         return toRemove
+    }
+
+    fun findWithPerson(personId: Long): List<Quote> {
+        val q = em.createNamedQuery("quote.findWithPersonId", Quote::class.java)
+        q.setParameter("personId", personId)
+        return q.resultList
     }
 }

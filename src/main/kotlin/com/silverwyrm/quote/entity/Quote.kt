@@ -1,9 +1,14 @@
 package com.silverwyrm.quote.entity
 
+import com.silverwyrm.person.entity.Person
+import com.silverwyrm.user.entity.QuoteUser
 import javax.persistence.*
 
 @Entity
-@NamedQuery(name = "quote.findAll", query = "select q from Quote q")
+@NamedQueries(
+NamedQuery(name = "quote.findAll", query = "select q from Quote q"),
+NamedQuery(name = "quote.findWithPersonId", query = "select distinct q from Person p, Quote q where q member of p.quotes and p.id = :personId")
+)
 data class Quote(
         @Id
         @GeneratedValue
@@ -11,5 +16,9 @@ data class Quote(
 ) {
     public lateinit var text: String
 
+    @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.REFRESH], fetch = FetchType.EAGER)
+    lateinit var quotedPersons: List<Person>
 
+    @ManyToOne(cascade = [CascadeType.MERGE, CascadeType.REFRESH])
+    lateinit var quoter: QuoteUser
 }
