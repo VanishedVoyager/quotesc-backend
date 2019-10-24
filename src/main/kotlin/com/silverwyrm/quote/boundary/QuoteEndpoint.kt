@@ -8,6 +8,7 @@ import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
 @Path("/quotes")
+@Produces(MediaType.APPLICATION_JSON)
 open class QuoteEndpoint {
 
     @Inject
@@ -16,40 +17,34 @@ open class QuoteEndpoint {
 //    lateinit var personDao: PersonDao
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     fun findAll(): List<Quote>{
         return quoteDao.findAll()
     }
 
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
     fun create(Quote: Quote): Quote {
         return quoteDao.add(Quote)
     }
 
     @PUT
-    @Produces(MediaType.APPLICATION_JSON)
     fun update(quote: Quote): Quote {
         return quoteDao.update(quote)
     }
 
     @PUT
     @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
     fun update(@PathParam("id") id: Long, quote: Quote): Quote {
         quote.id = id
         return quoteDao.update(quote)
     }
 
     @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
     fun delete(quote: Quote): Quote {
         return quoteDao.delete(quote.id!!)
     }
 
     @DELETE
     @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
     fun delete(@PathParam("id") id: Long): Quote {
         return quoteDao.delete(id)
     }
