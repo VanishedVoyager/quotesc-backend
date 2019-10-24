@@ -6,6 +6,9 @@ import javax.json.bind.annotation.JsonbTransient
 import javax.persistence.*
 
 @Entity
+@NamedQueries(
+        NamedQuery(name = "person.findAll", query = "select p from Person p")
+)
 data class Person(
         @Id
         @GeneratedValue
