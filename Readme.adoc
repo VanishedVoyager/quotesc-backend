@@ -19,6 +19,7 @@ connected to a spreadsheet) to a progressive web-app.
 Person "n" o--o "m" Quote
 Person <|-- User
 Quote "n" -o "1" User
+Person --o Nickname
 class Quote {
     + text : String
     + quotedPersons : List<Person>
@@ -33,10 +34,15 @@ class User {
     + sub : String
     + person : Person
 }
+class Nickname {
+    + text : String
+}
 ----
 Description: A user (in my private Project will this be connected to keycloak) may
 submit a quote. This quote has text and one or more People that were quoted.
-A Person may correspond to an account, and be a user.
+A Person may correspond to an account, and be a user. People are traditionally
+given Nicknames, which describe their most recent remarkable action
+or are just insiders. One person can have more nicknames.
 
 == Use Cases
 [plantuml]
@@ -66,6 +72,9 @@ Quote Query:: A registered user wants to view quotes, filtered by person and dat
 View Statistics:: A registered user wants to view statistics, like average quote time,
 most quoted person and so on.
 Administer Quotes:: A dedicated admin wants to be able to edit, and delete quotes.
+
+=== Quote Endpoint
+
 
 == Usage
 === Running the whole stack in production
@@ -103,3 +112,50 @@ the docker-compose file uses `app:passme` as credentials and
 a database called `quotesc`.
 
 image::DatasourceIntellij.png[Datasource in Intellij]
+
+== Panache and Hibernate
+I used Panache to access the `Nickname` entity.
+
+There are two ways to use Panache, one is to directly extend `PanacheEntity`
+which allows you to access the Persistence-Functions directly from the class.
+[source,java]
+----
+person.persist();
+
+// finding a specific person by ID
+person = Person.findById(personId);
+
+// finding all living persons
+List<Person> livingPersons = Person.list("status", Status.Alive);
+----
+But i really am not keen on the idea of having this sort of code inside of my Entities.
+I think they should serve one and only one purpose - that of storing data. And also
+you have to derive from PanacheEntity which seems kind of inelegant.
+
+Therefore i fell back to the second method of using Panache. I created my `NicknameDao`
+and then let that extend `PanacheRepository<Nickname>` which really feels like using
+SpringBoot's Data Api. Then I can use my Dao like always, but instead of having to fiddle
+with JPQL and NamedQueries i can use Panache's fluent api to access the data.
+
+I am a big fan of things like these, because it's way less error prone, you cannot
+make any syntax errors - and if you do, they are found at compile time. Most of the
+time it's more readable. Intellij's JPQL intellisense and semantic checking is making troubles
+with kotlin at the time, so that's another point for Panache.
+
+I can see only two big downsides. When using `PanacheRepository` all of the flexibility
+and the query-functions are exposed to other classes. While this can be a cool thing, because
+everyone can build their queries where and whenever they like and doesn't have to program it into
+the Dao, this can also be the source of bad programming, as code could be cluttered everywhere.
+This is just a thing to keep in mind, but no real downside.
+
+The big downside of panache is surely it's performance. Even Hibernate is relatively slow
+compared to prepared and well written SQL-Statements but Hibernate still can prepare some
+of it's logic at startup time. This is the reason why we normally use NamedStatements.
+Panache on the other hand doesn't seem to do so, so all statements are generated while
+running - hopefully they are cached - but this takes away precious cpu-time. And of course
+adding another layer of generators will prevent perfect optimizing of SQL-Queries.
+I didn't look into how Panache behaves with the "n+1"-Problem but I am not planning to do so
+as of now for I really like Panache and would like to use it without having a bad conscience.
+
+I will use Panache in my private Projects, as it makes my code more clean and at this time
+I am more worried about unclean code than about millisecond-performance.

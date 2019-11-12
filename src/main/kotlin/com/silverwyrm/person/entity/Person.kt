@@ -1,5 +1,6 @@
 package com.silverwyrm.person.entity
 
+import com.silverwyrm.nickname.entity.Nickname
 import com.silverwyrm.quote.entity.Quote
 import org.jboss.resteasy.spi.touri.MappedBy
 import javax.json.bind.annotation.JsonbTransient
@@ -21,4 +22,8 @@ open class Person(
     @JsonbTransient
     @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.REFRESH], mappedBy = "quotedPersons")
     open lateinit var quotes: List<Quote>
+
+
+    @OneToMany(cascade = [CascadeType.MERGE, CascadeType.REFRESH], mappedBy = "person")
+    open lateinit var nicknames: List<Nickname>
 }

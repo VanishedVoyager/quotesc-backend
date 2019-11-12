@@ -70,11 +70,14 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-jdbc-postgresql</artifactId>
     </dependency>
-    <!-- H2 For testing purposes -->
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-jdbc-h2</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-hibernate-orm-panache</artifactId>
     </dependency>
   </dependencies>
   <build>
