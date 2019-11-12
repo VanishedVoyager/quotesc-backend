@@ -42,7 +42,7 @@ open class QuoteDao {
         return toRemove
     }
 
-    fun findWithPerson(personId: Long): List<Quote> {
+    open fun findWithPerson(personId: Long): List<Quote> {
         val q = em.createNamedQuery("quote.findWithPersonId", Quote::class.java)
         q.setParameter("personId", personId)
         return q.resultList

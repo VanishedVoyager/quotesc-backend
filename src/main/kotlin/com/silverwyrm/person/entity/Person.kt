@@ -9,15 +9,16 @@ import javax.persistence.*
 @NamedQueries(
         NamedQuery(name = "person.findAll", query = "select p from Person p")
 )
-data class Person(
+@Inheritance(strategy = InheritanceType.JOINED)
+open class Person(
         @Id
         @GeneratedValue
         public var id: Long? = null
 ) {
-    public lateinit var firstName: String
-    public lateinit var lastName: String
+    open lateinit var firstName: String
+    open lateinit var lastName: String
 
     @JsonbTransient
     @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.REFRESH], mappedBy = "quotedPersons")
-    lateinit var quotes: List<Quote>
+    open lateinit var quotes: List<Quote>
 }

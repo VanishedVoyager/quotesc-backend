@@ -17,7 +17,7 @@ data class Quote(
 ) {
     public lateinit var text: String
 
-    @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.REFRESH], fetch = FetchType.EAGER)
+    @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.REFRESH], fetch = FetchType.EAGER, targetEntity = Person::class)
     lateinit var quotedPersons: List<Person>
 
     @ManyToOne(cascade = [CascadeType.MERGE, CascadeType.REFRESH])
