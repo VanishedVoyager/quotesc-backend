@@ -4,6 +4,10 @@ volumes:
   postgres_data:
     driver: local
 
+networks:
+  quotesc-net:
+    driver: bridge
+
 services:
   postgres:
     image: postgres
@@ -15,5 +19,14 @@ services:
       POSTGRES_PASSWORD: passme
     ports:
       - 5432:5432
+    networks:
+      - quotesc-net
 
-
+  quotesc:
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.jvm
+    networks:
+      - quotesc-net
+    ports:
+      - 8080:8080
