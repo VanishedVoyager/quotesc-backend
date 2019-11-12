@@ -17,6 +17,11 @@ open class QuoteDao {
         return e.resultList
     }
 
+    open fun count(): Int {
+        val e = em.createNamedQuery("quote.count", Int::class.java)
+        return e.singleResult
+    }
+
     @Transactional
     open fun add(quote: Quote): Quote {
         em.persist(quote)

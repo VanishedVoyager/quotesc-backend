@@ -1,5 +1,6 @@
 package com.silverwyrm.debug.boundary
 
+import com.silverwyrm.debug.control.DebugGenerator
 import com.silverwyrm.person.control.PersonDao
 import com.silverwyrm.person.entity.Person
 import com.silverwyrm.quote.control.QuoteDao
@@ -18,31 +19,12 @@ open class DebugEndpoint {
     lateinit var quoteDao: QuoteDao
 
     @Inject
-    lateinit var personDao: PersonDao
-
-    @Inject
-    lateinit var userDao: UserDao
+    lateinit var debugGenerator: DebugGenerator
 
     @POST
     @Path("/generate")
     fun genTestData(): Response {
-
-        val quoteUser = QuoteUser().apply { sub="bigBrainQuoteUser" }
-
-        userDao.add(quoteUser)
-
-        val jan = Person().apply { firstName="Jan"; lastName="Neubauer" }
-        val erik = Person().apply { firstName="Erik"; lastName="Mayerhofer" }
-
-        personDao.add(jan)
-        personDao.add(erik)
-
-        val quotes = arrayOf(
-                Quote().apply { text="Ahhhaahah I bin so BRAIN!N!!"; quotedPersons=listOf(jan); quoter=quoteUser },
-                Quote().apply { text="Das Yoinkt den Yettel in den Bettel"; quotedPersons=listOf(erik); quoter=quoteUser }
-        )
-        quotes.forEach { quoteDao.add(it) }
-
-        return Response.ok("${quotes.size} Persons and ${quotes.size} Quotes added.").build()
+        debugGenerator.generateSomeData()
+        return Response.ok("${quoteDao.count()} Quotes now in DB").build()
     }
 }
