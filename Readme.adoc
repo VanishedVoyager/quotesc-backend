@@ -1,0 +1,32 @@
+= Quote-Management
+Erik Mayrhofer <obyoxar@gmail.com>
+
+As a basis for this assignment, I decided not to use my previous projects, because first I didn't
+like my data model, and second I currently had the perfect start as a private project.
+
+This project is a quote manager. Such a tool was desired by me and my friends for quite a while
+and recently I started working on it.
+
+[plantuml]
+----
+Person "n" o--o "m" Quote
+Person <|-- User
+Quote "n" --o "1" User
+class Quote {
+    + text : String
+    + quotedPersons : List<Person>
+    + quoter : QuoteUser
+}
+class Person {
+    + firstName : String
+    + lastName : String
+    + quotes : List<Quote>
+}
+class User {
+    + sub : String
+    + person : Person
+}
+----
+Description: A user (in my private Project will this be connected to keycloak) may
+submit a quote. This quote has text and one or more People will be quoted.
+There may exist a link between Person and User.
