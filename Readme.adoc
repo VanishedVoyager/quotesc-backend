@@ -1,17 +1,24 @@
 = Quote-Management
+:imagesdir: ./img
+:source-highlighter: coderay
 Erik Mayrhofer <obyoxar@gmail.com>
 
+== General Overview
 As a basis for this assignment, I decided not to use my previous projects, because first I didn't
-like my data model, and second I currently had the perfect start as a private project.
+like my data model at all (it was so primitive), and second I am currently working on a private
+project, which can be used for this like a charm.
 
-This project is a quote manager. Such a tool was desired by me and my friends for quite a while
+This project is the backend for a quote manager. Such a tool was desired by me and my friends for quite a while
 and recently I started working on it.
+
+The long term idea is to transform our current solution for keeping track of funny quotes (a google-form
+connected to a spreadsheet) to a progressive web-app.
 
 [plantuml]
 ----
 Person "n" o--o "m" Quote
 Person <|-- User
-Quote "n" --o "1" User
+Quote "n" -o "1" User
 class Quote {
     + text : String
     + quotedPersons : List<Person>
@@ -28,5 +35,71 @@ class User {
 }
 ----
 Description: A user (in my private Project will this be connected to keycloak) may
-submit a quote. This quote has text and one or more People will be quoted.
-There may exist a link between Person and User.
+submit a quote. This quote has text and one or more People that were quoted.
+A Person may correspond to an account, and be a user.
+
+== Use Cases
+[plantuml]
+----
+
+actor regus as "Registered User"
+actor admin as "Administrator"
+
+usecase UC1 as "Submit a Quote"
+usecase UC2 as "Quote Query"
+usecase UC3 as "View Statistics"
+usecase UC4 as "Administer Quotes"
+
+regus --> UC1
+regus --> UC2
+regus --> UC3
+
+regus <|- admin
+
+admin --> UC4
+----
+Description:
+
+Submit a Quote:: A registered user wants to sumit a quote, which is persisted and can be
+viewed by others
+Quote Query:: A registered user wants to view quotes, filtered by person and date.
+View Statistics:: A registered user wants to view statistics, like average quote time,
+most quoted person and so on.
+Administer Quotes:: A dedicated admin wants to be able to edit, and delete quotes.
+
+== Usage
+=== Running the whole stack in production
+. `mvn package` Builds the project. This will run the unit tests using an
+in-memory h2-db and then package the application to `target/quotesc-backend-..-runner.jar`.
+This jar will be needed by the next step.
+. `docker-compose build` Will build the docker-image for quotesc.
+. `docker-compose up` Will start a PostgreSQL-DB and the webserver.
+
+=== Running in Dev-Mode
+==== Starting the Database
+The project directory contains a `docker-compose.yml` which
+will pre default start the Database and also the Quarkus-Server.
+We can prevent this from happening using
+
+[source, shell]
+----
+docker-compose up postgres
+----
+
+which will only start the Database.
+
+==== Running the project in dev mode
+When the database was started, we can launch Quarkus development mode.
+[source, shell]
+----
+./mvnw compile quarkus:dev
+----
+
+=== Database Connection in IDE
+
+Create a new Datasource of type "PostgreSQL". Then add the
+datasource like shown in the image. The database shipped with
+the docker-compose file uses `app:passme` as credentials and
+a database called `quotesc`.
+
+image::DatasourceIntellij.png[Datasource in Intellij]
