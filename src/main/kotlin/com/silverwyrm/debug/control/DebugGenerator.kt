@@ -22,19 +22,18 @@ open class DebugGenerator {
     open lateinit var userDao: UserDao
 
     open fun generateSomeData(){
-        val quoteUser = QuoteUser().apply { sub="bigBrainQuoteUser" }
-
-        userDao.add(quoteUser)
 
         val jan = Person().apply { firstName="Jan"; lastName="Neubauer" }
-        val erik = Person().apply { firstName="Erik"; lastName="Mayerhofer" }
+        val erik = QuoteUser().apply { firstName="Erik"; lastName="Mayerhofer"; sub="eriksGoogleSub" }
+        val wahli = Person().apply { firstName="Max"; lastName="Wal" }
 
         personDao.add(jan)
-        personDao.add(erik)
+        userDao.add(erik)
+        personDao.add(wahli)
 
         val quotes = arrayOf(
-                Quote().apply { text="Ahhhaahah I bin so BRAIN!N!!"; quotedPersons=listOf(jan); quoter=quoteUser },
-                Quote().apply { text="Das Yoinkt den Yettel in den Bettel"; quotedPersons=listOf(erik); quoter=quoteUser }
+                Quote().apply { text="Kinan wir ned afoch getBlob() mochn?"; quotedPersons=listOf(jan); quoter=erik },
+                Quote().apply { text="E: Du bist böse wast du des?\nW: Jo."; quotedPersons=listOf(erik, wahli); quoter=erik }
         )
         quotes.forEach { quoteDao.add(it) }
     }
