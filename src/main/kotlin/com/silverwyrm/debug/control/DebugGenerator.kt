@@ -6,8 +6,10 @@ import com.silverwyrm.quote.control.QuoteDao
 import com.silverwyrm.quote.entity.Quote
 import com.silverwyrm.user.control.UserDao
 import com.silverwyrm.user.entity.QuoteUser
+import io.quarkus.hibernate.orm.panache.Panache
 import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
+import javax.transaction.Transactional
 
 @ApplicationScoped
 open class DebugGenerator {
@@ -21,6 +23,7 @@ open class DebugGenerator {
     @Inject
     open lateinit var userDao: UserDao
 
+    @Transactional
     open fun generateSomeData(){
         val quoteUser = QuoteUser().apply { sub="bigBrainQuoteUser" }
 
@@ -36,6 +39,8 @@ open class DebugGenerator {
                 Quote().apply { text="Ahhhaahah I bin so BRAIN!N!!"; quotedPersons=listOf(jan); quoter=quoteUser },
                 Quote().apply { text="Das Yoinkt den Yettel in den Bettel"; quotedPersons=listOf(erik); quoter=quoteUser }
         )
-        quotes.forEach { quoteDao.add(it) }
+        quotes.forEach { quoteDao.persist(it) }
+
+        Panache.getEntityManager().flush()
     }
 }

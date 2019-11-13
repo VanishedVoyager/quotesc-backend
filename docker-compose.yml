@@ -1,30 +1,48 @@
 version: '3'
 
 volumes:
-  postgres_data:
+  keycloak_data:
+    driver: local
+  quotesc_data:
     driver: local
 
+networks:
+  keycloak_network:
+    driver: bridge
+
 services:
-  postgres:
+  keycloak_db:
     image: postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - keycloak_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: passme
+    networks:
+      - keycloak_network
   keycloak:
     image: jboss/keycloak
     environment:
       DB_VENDOR: POSTGRES
-      DB_ADDR: postgres
+      DB_ADDR: keycloak_db
       DB_DATABASE: keycloak
-      DB_USER: keycloak
+      DB_USER: app
       DB_SCHEMA: public
-      DB_PASSWORD: password
+      DB_PASSWORD: passme
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Pa55w0rd
     ports:
       - 8081:8080
-    depends_on:
-      - postgres
+    networks:
+      - keycloak_network
+  quotesc_db:
+    image: postgres
+    volumes:
+      - quotesc_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: quotesc
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: passme
+    ports:
+      - 5432:5432

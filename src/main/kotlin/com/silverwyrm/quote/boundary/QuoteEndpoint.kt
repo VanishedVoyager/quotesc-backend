@@ -2,7 +2,9 @@ package com.silverwyrm.quote.boundary
 
 import com.silverwyrm.quote.control.QuoteDao
 import com.silverwyrm.quote.entity.Quote
+import io.quarkus.hibernate.orm.panache.Panache
 import javax.inject.Inject
+import javax.transaction.Transactional
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
@@ -12,41 +14,50 @@ import javax.ws.rs.core.Response
 open class QuoteEndpoint {
 
     @Inject
-    lateinit var quoteDao: QuoteDao
-//    @Inject
-//    lateinit var personDao: PersonDao
+    open lateinit var quoteDao: QuoteDao
 
     @GET
-    fun findAll(): List<Quote>{
-        return quoteDao.findAll()
+    fun findAll(): Response{
+        return Response.ok(quoteDao.findAll().list<Quote>()).build()
     }
 
     @POST
-    fun create(Quote: Quote): Quote {
-        return quoteDao.add(Quote)
+    @Transactional
+    fun create(quote: Quote): Response {
+        quoteDao.persistAndFlush(quote)
+        quoteDao.refresh(quote)
+        return Response.ok(quote).build()
     }
 
     @PUT
-    fun update(quote: Quote): Quote {
-        return quoteDao.update(quote)
+    @Transactional
+    fun update(quote: Quote): Response {
+        quoteDao.merge(quote)
+        quoteDao.refresh(quote)
+        return Response.ok(quote).build()
     }
 
     @PUT
+    @Transactional
     @Path("{id}")
-    fun update(@PathParam("id") id: Long, quote: Quote): Quote {
+    fun update(@PathParam("id") id: Long, quote: Quote): Response {
         quote.id = id
-        return quoteDao.update(quote)
+        quoteDao.merge(quote)
+        quoteDao.refresh(quote)
+        return Response.ok(quote).build()
     }
 
     @DELETE
-    fun delete(quote: Quote): Quote {
-        return quoteDao.delete(quote.id!!)
+    fun delete(quote: Quote): Response {
+        quoteDao.delete(quote)
+        return Response.ok().build()
     }
 
     @DELETE
     @Path("{id}")
-    fun delete(@PathParam("id") id: Long): Quote {
-        return quoteDao.delete(id)
+    fun delete(@PathParam("id") id: Long): Response {
+        quoteDao.delete("id", id)
+        return Response.ok().build()
     }
 
     @GET

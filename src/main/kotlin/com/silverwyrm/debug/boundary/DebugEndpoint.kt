@@ -25,6 +25,7 @@ open class DebugEndpoint {
     @Path("/generate")
     open fun genTestData(): Response {
         debugGenerator.generateSomeData()
-        return Response.ok("${quoteDao.count()} Quotes now in DB").build()
+//        return Response.ok("${quoteDao.count()} Quotes now in DB").build()
+        return Response.ok().build()
     }
 }
