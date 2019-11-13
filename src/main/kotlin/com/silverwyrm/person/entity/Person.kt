@@ -9,7 +9,8 @@ import javax.persistence.*
 
 @Entity
 @NamedQueries(
-        NamedQuery(name = "person.findAll", query = "select p from Person p")
+        NamedQuery(name = "person.findAll", query = "select p from Person p"),
+        NamedQuery(name = "person.countQuotes", query = "select p, count(quotes) from Person p group by p") //TODO Doesn't work.
 )
 @Inheritance(strategy = InheritanceType.JOINED)
 open class Person(

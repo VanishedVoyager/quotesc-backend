@@ -1,6 +1,7 @@
 = Quote-Management
 :imagesdir: ./img
 :source-highlighter: coderay
+:toc:
 Erik Mayrhofer <obyoxar@gmail.com>
 
 == General Overview
@@ -14,6 +15,9 @@ and recently I started working on it.
 The long term idea is to transform our current solution for keeping track of funny quotes (a google-form
 connected to a spreadsheet) to a progressive web-app.
 
+
+
+== Class Diagram
 [plantuml]
 ----
 Person "n" o--o "m" Quote
@@ -66,15 +70,74 @@ admin --> UC4
 ----
 Description:
 
-Submit a Quote:: A registered user wants to sumit a quote, which is persisted and can be
+#1 Submit a Quote:: A registered user wants to sumit a quote, which is persisted and can be
 viewed by others
-Quote Query:: A registered user wants to view quotes, filtered by person and date.
-View Statistics:: A registered user wants to view statistics, like average quote time,
+#2 Quote Query:: A registered user wants to view quotes, filtered by person and date.
+#3 View Statistics:: A registered user wants to view statistics, like average quote time,
 most quoted person and so on.
-Administer Quotes:: A dedicated admin wants to be able to edit, and delete quotes.
+#4 Administer Quotes:: A dedicated admin wants to be able to edit, and delete quotes.
+
+I am using `jq` to format json output from commandline. (Can easily be installed via apt or brew)
 
 === Quote Endpoint
+  GET, PUT, POST, DELETE http://localhost:8080/quotes[/{id}]
 
+==== Get `UC2`
+[source, shell]
+----
+curl -X GET \
+  http://localhost:8080/quotes | jq
+----
+==== Post `UC1`
+[source, shell]
+----
+curl -X POST \
+  http://localhost:8080/quotes \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "text": "NewTestQuote",
+    "quotedPersons": [
+            {
+                "id": 5
+            }
+        ],
+        "quoter": {
+            "id": 6
+        }
+}' | jq
+----
+Be sure to use Person- and User-ids that exist in your run. You can see some of them when getting all quotes
+
+==== Put `UC4`
+[source, shell]
+----
+curl -X PUT \
+  http://localhost:8080/quotes \
+  -d '{
+    "text": "PuttedChangedQuote",
+    "quotedPersons": [
+        {
+            "id": 5
+        }
+    ],
+    "quoter": {
+        "id": 6
+    },
+    "id": 12
+}' | jq
+----
+Be sure to use Quote-, Person- and User-ids that exist in your run. You can see some of them when getting all quotes
+
+==== Delete `UC4`
+[source, shell]
+----
+curl -X DELETE \
+  http://localhost:8080/quotes/12 \
+  -H 'Content-Type: application/json' \
+  -H 'cache-control: no-cache' | jq
+----
+
+===
 
 == Usage
 === Running the whole stack in production
