@@ -12,7 +12,7 @@ class Nickname(
         public var id: Long? = null
 ) {
     @ManyToOne(cascade = [CascadeType.MERGE, CascadeType.REFRESH])
-    private lateinit var person: Person
+    lateinit var person: Person
 
     lateinit var text: String
 }

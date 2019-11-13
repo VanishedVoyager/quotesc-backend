@@ -5,12 +5,7 @@ import com.silverwyrm.user.entity.QuoteUser
 import javax.persistence.*
 
 @Entity
-@NamedQueries(
-NamedQuery(name = "quote.findAll", query = "select q from Quote q"),
-NamedQuery(name = "quote.findWithPersonId", query = "select distinct q from Person p, Quote q where q member of p.quotes and p.id = :personId"),
-        NamedQuery(name = "quote.count", query = "select count(q) from Quote q")
-)
-data class Quote(
+class Quote(
         @Id
         @GeneratedValue
         public var id: Long? = null

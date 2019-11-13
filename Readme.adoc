@@ -141,6 +141,11 @@ I am a big fan of things like these, because it's way less error prone, you cann
 make any syntax errors - and if you do, they are found at compile time. Most of the
 time it's more readable. Intellij's JPQL intellisense and semantic checking is making troubles
 with kotlin at the time, so that's another point for Panache.
+Panache also reduces the boilerplate code as normally you would have to write
+`persist`, `update`, `findAll`, etc. for each single Dao you use. In the past I have found
+myself creating simple abstract Daos, that did that for me. With panache all of this is
+already implemented, so you can concentrate on business logic, instead of writing the same
+thing for the 100th time.
 
 I can see only two big downsides. When using `PanacheRepository` all of the flexibility
 and the query-functions are exposed to other classes. While this can be a cool thing, because
@@ -157,5 +162,27 @@ adding another layer of generators will prevent perfect optimizing of SQL-Querie
 I didn't look into how Panache behaves with the "n+1"-Problem but I am not planning to do so
 as of now for I really like Panache and would like to use it without having a bad conscience.
 
-I will use Panache in my private Projects, as it makes my code more clean and at this time
-I am more worried about unclean code than about millisecond-performance.
+Another thing is, that `@Transactional` is contained within the Dao for Hibernate, but for
+Panache this has to be written outside of the Repository. This can be a positive thing, as
+Transactions are treated more seriously then, and maybe are really Transaction-Based
+instead of method based.
+
+Panache has near to no documentation. I wanted to use the `em.refresh()` using PanacheRepositories
+but this is not documented anywhere. Not even Adam Bien's video for Panache is really informative.
+
+I will try to use Panache in my private Projects, as it makes my code more clean and at this time
+I am more worried about unclean code than about millisecond-performance. But if Panache want's to
+fulfill my needs, it has to grow and get more flexible and documented.
+
+An upside with Panache is that it supports paging and streaming out of the box which is really a
+good thing.
+
+Later edit:: I also ported `QuoteDao` to Panache as the amount of queries was growing, and
+writing NamedQueries is just not as comfortable as using Panache. Instantly I could reduce
+the monster of `QuoteDao` which had 50 lines of code (and basically no real business logic,
+because the real logic was in the NamedQuery of Quote) to a small and concise class with only 15
+Lines, which contained all of the logic that was needed.
+
+== Using Jackson
+
+I am using Jackson because it has `@JsonIgnoreProperties`. See Person and Nickname for Details.

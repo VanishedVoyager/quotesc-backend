@@ -22,4 +22,10 @@ class NicknameEndpoint {
         val list = nicknameDao.findByPersonId(userId);
         return Response.ok(list).build()
     }
+
+    @GET
+    open fun getAll(): Response {
+        val list = nicknameDao.findAll().list<Nickname>()
+        return Response.ok(list).build()
+    }
 }
