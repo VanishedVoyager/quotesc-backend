@@ -23,7 +23,7 @@ open class DebugEndpoint {
 
     @POST
     @Path("/generate")
-    fun genTestData(): Response {
+    open fun genTestData(): Response {
         debugGenerator.generateSomeData()
         return Response.ok("${quoteDao.count()} Quotes now in DB").build()
     }

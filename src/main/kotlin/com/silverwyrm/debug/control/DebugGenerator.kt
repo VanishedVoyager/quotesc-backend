@@ -13,15 +13,15 @@ import javax.inject.Inject
 open class DebugGenerator {
 
     @Inject
-    lateinit var quoteDao: QuoteDao
+    open lateinit var quoteDao: QuoteDao
 
     @Inject
-    lateinit var personDao: PersonDao
+    open lateinit var personDao: PersonDao
 
     @Inject
-    lateinit var userDao: UserDao
+    open lateinit var userDao: UserDao
 
-    fun generateSomeData(){
+    open fun generateSomeData(){
         val quoteUser = QuoteUser().apply { sub="bigBrainQuoteUser" }
 
         userDao.add(quoteUser)

@@ -17,9 +17,9 @@ open class QuoteDao {
         return e.resultList
     }
 
-    open fun count(): Int {
-        val e = em.createNamedQuery("quote.count", Int::class.java)
-        return e.singleResult
+    open fun count(): Long {
+        val e = em.createNamedQuery("quote.count", java.lang.Long::class.java)
+        return e.singleResult as Long
     }
 
     @Transactional
@@ -42,7 +42,7 @@ open class QuoteDao {
         return toRemove
     }
 
-    fun findWithPerson(personId: Long): List<Quote> {
+    open fun findWithPerson(personId: Long): List<Quote> {
         val q = em.createNamedQuery("quote.findWithPersonId", Quote::class.java)
         q.setParameter("personId", personId)
         return q.resultList
