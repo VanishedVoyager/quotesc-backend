@@ -7,6 +7,11 @@ import com.silverwyrm.quote.control.QuoteDao
 import com.silverwyrm.quote.entity.Quote
 import com.silverwyrm.user.control.UserDao
 import com.silverwyrm.user.entity.QuoteUser
+import io.quarkus.runtime.StartupEvent
+import javax.annotation.PostConstruct
+import javax.enterprise.context.ApplicationScoped
+import javax.enterprise.context.Initialized
+import javax.enterprise.event.Observes
 import javax.inject.Inject
 import javax.ws.rs.POST
 import javax.ws.rs.Path
@@ -27,4 +32,6 @@ open class DebugEndpoint {
         debugGenerator.generateSomeData()
         return Response.ok("${quoteDao.count()} Quotes now in DB").build()
     }
+
+
 }
