@@ -106,7 +106,7 @@ curl -X POST \
         }
 }' | jq
 ----
-Be sure to use Person- and User-ids that exist in your run. You can see some of them when getting all quotes
+WARNING: Be sure to use Person- and User-ids that exist in your run. You can see some of them when getting all quotes
 
 ==== Put `UC4`
 [source, shell]
@@ -126,7 +126,7 @@ curl -X PUT \
     "id": 12
 }' | jq
 ----
-Be sure to use Quote-, Person- and User-ids that exist in your run. You can see some of them when getting all quotes
+WARNING: Be sure to use Quote-, Person- and User-ids that exist in your run. You can see some of them when getting all quotes
 
 ==== Delete `UC4`
 [source, shell]
@@ -257,3 +257,10 @@ Lines, which contained all of the logic that was needed.
 == Using Jackson
 
 I am using Jackson because it has `@JsonIgnoreProperties`. See Person and Nickname for Details.
+
+== OpenAPI / Swagger
+Look at the OpenAPI-Specifications at `localhost:8080/openapi`. A user interface is available at
+`localhost:8080/swagger-ui`.
+
+NOTE: I included `quarkus.swagger-ui.always-include=true` so swagger UI is also available in
+production mode.
