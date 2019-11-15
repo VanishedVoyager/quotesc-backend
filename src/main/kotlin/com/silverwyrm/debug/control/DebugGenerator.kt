@@ -34,8 +34,8 @@ open class DebugGenerator {
     @Inject
     open lateinit var nicknameDao: NicknameDao
 
-    @ConfigProperty(name = "quarkus.hibernate-orm.database.generation")
-    open lateinit var databaseGeneration: String
+    @ConfigProperty(name = "com.silverwyrm.debug.generate-data")
+    open var generateData: Boolean = false
 
     @Inject
     open lateinit var logger: Logger
@@ -65,7 +65,7 @@ open class DebugGenerator {
     }
 
     open fun startupEvent(@Observes event: StartupEvent){
-        if(databaseGeneration == "drop-and-create"){
+        if(generateData){
             generateSomeData()
         }
     }
