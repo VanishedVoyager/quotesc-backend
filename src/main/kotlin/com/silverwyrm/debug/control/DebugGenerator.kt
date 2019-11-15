@@ -58,6 +58,7 @@ open class DebugGenerator {
 
         val quotes = arrayOf(
                 Quote().apply { text="Kinan wir ned afoch getBlob() mochn?"; quotedPersons=listOf(jan); quoter=erik },
+                Quote().apply { text="Mit meine Mutagene undso, jo do werd i voi zur Fledermaus!"; quotedPersons=listOf(jan); quoter=erik },
                 Quote().apply { text="E: Du bist böse wast du des?\nW: Jo."; quotedPersons=listOf(erik, wahli); quoter=erik }
         )
         quotes.forEach { quoteDao.persist(it) }

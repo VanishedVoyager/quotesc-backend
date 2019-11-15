@@ -137,7 +137,15 @@ curl -X DELETE \
   -H 'cache-control: no-cache' | jq
 ----
 
-===
+=== Statistics Endpoint
+==== Top People
+Gibt die Quote-Anzahl pro Person zurück.
+[source, shell]
+----
+curl -X GET \
+  http://localhost:8080/statistics/toppeople | jq
+----
+
 
 == Usage
 === Running the whole stack in production
