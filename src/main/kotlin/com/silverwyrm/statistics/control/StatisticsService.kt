@@ -13,7 +13,7 @@ open class StatisticsService {
     @Inject
     open lateinit var entityManager: EntityManager
 
-    fun getTopPeople(): List<PersonStatDto> {
+    open fun getTopPeople(): List<PersonStatDto> {
         val query = entityManager.createNamedQuery("person.countQuotes", PersonStatDto::class.java)
         return query.resultList
     }

@@ -9,7 +9,7 @@ import javax.enterprise.inject.spi.InjectionPoint
 @ApplicationScoped
 open class LoggerProducer {
     @Produces
-    fun produceLogger(injectionPoint: InjectionPoint): Logger {
+    open fun produceLogger(injectionPoint: InjectionPoint): Logger {
         return LoggerFactory.getLogger(injectionPoint.bean.beanClass)
     }
 }
