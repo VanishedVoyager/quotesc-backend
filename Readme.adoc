@@ -19,7 +19,7 @@ connected to a spreadsheet) to a progressive web-app.
 
 == ERD
 ifdef::env-github[]
-image::{diagram-proxy}/doc/erd.puml[]
+image::{diagram-proxy}/doc/erd.puml[Please wait for diagram to be merged into master]
 endif::[]
 ifndef::env-github[]
 plantuml::doc/erd.puml[]
