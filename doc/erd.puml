@@ -67,7 +67,7 @@ $pr("lastName: String")
 }
 
 entity Nickname {
-$pk("id: Numbera")
+$pk("id: Number")
 --
 $pr("text: String")
 }

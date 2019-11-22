@@ -3,11 +3,8 @@
 :source-highlighter: coderay
 :toc:
 Erik Mayrhofer <obyoxar@gmail.com>
-:diagram-processor: doc/diagram.adoc
-ifdef::env-github[]
-:diagram-processor: doc/diagram-gh.adoc
-:repolink: VanishedWanderer/quotesc-backend/model-rework
-endif::[]
+:repolink: VanishedWanderer/quotesc-backend/master
+:diagram-proxy: http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/{repolink}
 
 == General Overview
 As a basis for this assignment, I decided not to use my previous projects, because first I didn't
@@ -21,8 +18,12 @@ The long term idea is to transform our current solution for keeping track of fun
 connected to a spreadsheet) to a progressive web-app.
 
 == ERD
-:diagdir: doc/erd.puml
-include::{diagram-processor}[]
+ifdef::env-github[]
+image::{diagram-proxy}/doc/erd.puml[]
+endif::[]
+ifndef::env-github[]
+plantuml::doc/erd.puml[]
+endif::[]
 
 == Class Diagram
 [plantuml]
