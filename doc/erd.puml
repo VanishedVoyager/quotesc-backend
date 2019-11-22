@@ -1,0 +1,96 @@
+@startuml
+skinparam linetype ortho
+skinparam shadowing false
+
+!function $fk($a)
+//<&key> $a//
+!endfunction
+!function $pk($a)
+//   // <u>$a</u>
+!endfunction
+!function $pr($a)
+//   // $a
+!endfunction
+!function $pfk($a)
+<&key> <u>$a</u>
+!endfunction
+
+
+
+
+entity Quote {
+$pk("id: Number")
+--
+$pr("text: String")
+$pr("date: Date")
+$fk("quoter_id: Number")
+$pr("brain: Number")
+}
+
+
+entity Tag {
+$pk("id: Number")
+--
+$pr("text: String")
+}
+
+
+entity Review {
+$pk("id: Number")
+--
+$pr("score: Number [-5..5]")
+$pr("votes: Number")
+}
+
+
+entity User {
+$pfk("person_id: Number")
+--
+$pr("subject: String")
+}
+
+
+entity Group {
+$pk("id: Number")
+}
+
+entity Quote_Person{
+$pfk("quote_id: Number")
+$pfk("person_id: Number")
+}
+
+entity Person {
+$pk("id: Number")
+--
+$pr("firstName: String")
+$pr("lastName: String")
+}
+
+entity Nickname {
+$pk("id: Number")
+--
+$pr("text: String")
+}
+
+entity Person_Group {
+ $pfk("person_id: Number")
+ $pfk("group_id: Group")
+}
+
+
+
+Quote }o--o{ Tag
+Quote ||--o{ Review
+Quote }o--|| User
+Review }o--|| User
+
+User |o--|| Person
+
+Person }o-o{ Group
+
+Nickname |o--|| Quote_Person
+Quote }o--|{ Person
+Quote_Person .. (Quote, Person)
+(Group, Person) .. Person_Group
+
+@enduml
