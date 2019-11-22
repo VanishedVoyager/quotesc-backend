@@ -3,6 +3,11 @@
 :source-highlighter: coderay
 :toc:
 Erik Mayrhofer <obyoxar@gmail.com>
+:diagram-processor: doc/diagram.adoc
+ifdef::env-github[]
+:diagram-processor: doc/diagram-gh.adoc
+:repolink: VanishedWanderer/quotesc-backend/model-rework
+endif::[]
 
 == General Overview
 As a basis for this assignment, I decided not to use my previous projects, because first I didn't
@@ -15,7 +20,9 @@ and recently I started working on it.
 The long term idea is to transform our current solution for keeping track of funny quotes (a google-form
 connected to a spreadsheet) to a progressive web-app.
 
-
+== ERD
+:diagdir: doc/erd.puml
+include::{diagram-processor}[]
 
 == Class Diagram
 [plantuml]
