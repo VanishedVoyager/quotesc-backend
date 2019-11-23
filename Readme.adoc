@@ -264,3 +264,5 @@ Look at the OpenAPI-Specifications at `localhost:8080/openapi`. A user interface
 
 NOTE: I included `quarkus.swagger-ui.always-include=true` so swagger UI is also available in
 production mode.
+
+# Beurteilung
