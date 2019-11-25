@@ -6,6 +6,8 @@ import com.silverwyrm.person.control.PersonDao
 import com.silverwyrm.person.entity.Person
 import com.silverwyrm.quote.control.QuoteDao
 import com.silverwyrm.quote.entity.Quote
+import com.silverwyrm.quoteperson.control.QuotePersonDao
+import com.silverwyrm.quoteperson.entity.QuotePerson
 import com.silverwyrm.user.control.UserDao
 import com.silverwyrm.user.entity.QuoteUser
 import io.quarkus.arc.config.ConfigProperties
@@ -34,6 +36,9 @@ open class DebugGenerator {
     @Inject
     open lateinit var nicknameDao: NicknameDao
 
+    @Inject
+    open lateinit var quotePersonDao: QuotePersonDao
+
     @ConfigProperty(name = "com.silverwyrm.debug.generate-data")
     open var generateData: Boolean = false
 
@@ -44,24 +49,45 @@ open class DebugGenerator {
     open fun generateSomeData(){
         logger.info("Creating debug Data in Database")
 
-        val jan = Person().apply { firstName="Jan"; lastName="Neubauer"; nicknames=listOf(Nickname().apply { text="Der Denker" }, Nickname().apply { text="Big Brain Dude" }) }
-        val erik = QuoteUser().apply { firstName="Erik"; lastName="Mayerhofer"; sub="eriksGoogleSub"; nicknames=listOf(Nickname().apply { text="Der Privatdetektiv" }) }
-        val wahli = Person().apply { firstName="Max"; lastName="Wal"; nicknames=listOf(Nickname().apply { text="Raketenkopf" })  }
+        val jan = Person().apply { firstName="Jan"; lastName="Neubauer" }
+        val erik = QuoteUser().apply { firstName="Erik"; lastName="Mayerhofer"; sub="eriksGoogleSub" }
+        val wahli = Person().apply { firstName="Max"; lastName="Wal" }
 
-        jan.nicknames.forEach { nicknameDao.persist(it) }
-        erik.nicknames.forEach { nicknameDao.persist(it) }
-        wahli.nicknames.forEach { nicknameDao.persist(it) }
+//        jan.nicknames.forEach { nicknameDao.persist(it) }
+//        erik.nicknames.forEach { nicknameDao.persist(it) }
+//        wahli.nicknames.forEach { nicknameDao.persist(it) }
 
         personDao.add(jan)
         userDao.add(erik)
         personDao.add(wahli)
 
+        val janderdenker = Nickname().apply { text="Der Denker" }
+        val erikdergm = Nickname().apply { text="Der Gamemaster" }
+        val erikdergute = Nickname().apply { text="Der Gute" }
+        val wahlidierakete = Nickname().apply { text="Die Rakete" }
+
+        nicknameDao.persist(janderdenker)
+        nicknameDao.persist(erikdergm)
+        nicknameDao.persist(erikdergute)
+        nicknameDao.persist(wahlidierakete)
+
         val quotes = arrayOf(
-                Quote().apply { text="Kinan wir ned afoch getBlob() mochn?"; quotedPersons=listOf(jan); quoter=erik },
-                Quote().apply { text="Mit meine Mutagene undso, jo do werd i voi zur Fledermaus!"; quotedPersons=listOf(jan); quoter=erik },
-                Quote().apply { text="E: Du bist böse wast du des?\nW: Jo."; quotedPersons=listOf(erik, wahli); quoter=erik }
+                Quote().apply { text="Kinan wir ned afoch getBlob() mochn?"; quoter=erik },
+                Quote().apply { text="Mit meine Mutagene undso, jo do werd i voi zur Fledermaus!"; quoter=erik },
+                Quote().apply { text="E: Du bist böse wast du des?\nW: Jo."; quoter=erik }
         )
+
         quotes.forEach { quoteDao.persist(it) }
+
+        val quotePerson = arrayOf(
+                QuotePerson().apply { person=jan; quote=quotes[0]; nickname=janderdenker },
+                QuotePerson().apply { person=erik; quote=quotes[1]; nickname=erikdergm },
+                QuotePerson().apply { person=erik; quote=quotes[2]; nickname=erikdergute },
+                QuotePerson().apply { person=wahli; quote=quotes[2]; nickname=wahlidierakete }
+        )
+
+
+        quotePerson.forEach { quotePersonDao.persist(it) }
     }
 
     open fun startupEvent(@Observes event: StartupEvent){

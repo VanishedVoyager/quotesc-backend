@@ -57,6 +57,7 @@ $pk("id: Number")
 entity Quote_Person{
 $pfk("quote_id: Number")
 $pfk("person_id: Number")
+$fk("nickname_id: Number")
 }
 
 entity Person {
@@ -77,7 +78,10 @@ entity Person_Group {
  $pfk("group_id: Group")
 }
 
-
+entity Quote_Tag {
+ $pfk("quote_id: Number")
+ $pfk("tag_id: Number")
+}
 
 Quote }o--o{ Tag
 Quote ||--o{ Review
@@ -92,5 +96,6 @@ Nickname |o--|| Quote_Person
 Quote }o--|{ Person
 Quote_Person .. (Quote, Person)
 (Group, Person) .. Person_Group
+(Quote, Tag) .. Quote_Tag
 
 @enduml

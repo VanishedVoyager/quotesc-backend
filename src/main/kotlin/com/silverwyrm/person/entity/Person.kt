@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.silverwyrm.nickname.entity.Nickname
 import com.silverwyrm.quote.entity.Quote
+import com.silverwyrm.quoteperson.entity.QuotePerson
 import org.jboss.resteasy.spi.touri.MappedBy
 import javax.persistence.*
 
 @Entity
 @NamedQueries(
         NamedQuery(name = "person.findAll", query = "select p from Person p"),
-        NamedQuery(name = "person.countQuotes", query = "select new com.silverwyrm.statistics.entity.PersonStatDto(p, count(q.id)) from Person p LEFT JOIN p.quotes q GROUP BY p.id")
+        NamedQuery(name = "person.countQuotes", query = "select new com.silverwyrm.statistics.entity.PersonStatDto(p, count(q.quote)) from Person p LEFT JOIN p.quotePersons q GROUP BY p.id")
 )
 @Inheritance(strategy = InheritanceType.JOINED)
 open class Person(
@@ -21,11 +22,10 @@ open class Person(
     open lateinit var firstName: String
     open lateinit var lastName: String
 
-    @JsonIgnore
-    @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.REFRESH], mappedBy = "quotedPersons")
-    open lateinit var quotes: List<Quote>
+    @OneToMany(mappedBy = "person", targetEntity = QuotePerson::class)
+    open lateinit var quotePersons: List<QuotePerson>
 
-    @JsonIgnoreProperties("person")
-    @OneToMany(cascade = [CascadeType.MERGE, CascadeType.REFRESH], fetch = FetchType.EAGER, mappedBy = "person")
-    open lateinit var nicknames: List<Nickname>
+//    @JsonIgnoreProperties("person")
+//    @OneToMany(cascade = [CascadeType.MERGE, CascadeType.REFRESH], fetch = FetchType.EAGER, mappedBy = "person")
+//    open lateinit var nicknames: List<Nickname>
 }
