@@ -51,10 +51,12 @@ or are just insiders. One person can have more nicknames.
 == Use Cases
 [plantuml]
 ----
+left to right direction
 
 actor regus as "Registered User"
 actor admin as "Administrator"
 
+rectangle Quotesc {
 usecase UC1 as "Submit a Quote"
 usecase UC2 as "Quote Query"
 usecase UC3 as "View Statistics"
@@ -67,6 +69,7 @@ regus --> UC3
 regus <|- admin
 
 admin --> UC4
+}
 ----
 Description:
 
