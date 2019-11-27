@@ -2,6 +2,7 @@ package com.silverwyrm.quote.entity
 
 import com.silverwyrm.person.entity.Person
 import com.silverwyrm.quoteperson.entity.QuotePerson
+import com.silverwyrm.tag.entity.Tag
 import com.silverwyrm.user.entity.QuoteUser
 import javax.persistence.*
 
@@ -21,4 +22,8 @@ class Quote(
 
     @ManyToOne(cascade = [CascadeType.MERGE, CascadeType.REFRESH])
     lateinit var quoter: QuoteUser
+
+    @JvmSuppressWildcards
+    @ManyToMany(targetEntity = Tag::class)
+    lateinit var tags: List<Tag>
 }

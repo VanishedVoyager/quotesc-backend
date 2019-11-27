@@ -10,6 +10,8 @@ import com.silverwyrm.quote.control.QuoteDao
 import com.silverwyrm.quote.entity.Quote
 import com.silverwyrm.quoteperson.control.QuotePersonDao
 import com.silverwyrm.quoteperson.entity.QuotePerson
+import com.silverwyrm.tag.control.TagDao
+import com.silverwyrm.tag.entity.Tag
 import com.silverwyrm.user.control.UserDao
 import com.silverwyrm.user.entity.QuoteUser
 import io.quarkus.arc.config.ConfigProperties
@@ -45,6 +47,9 @@ open class DebugGenerator {
 
     @Inject
     open lateinit var groupDao: GroupDao
+
+    @Inject
+    open lateinit var tagDao: TagDao
 
     @ConfigProperty(name = "com.silverwyrm.debug.generate-data")
     protected open var generateData: Boolean = false
@@ -84,10 +89,16 @@ open class DebugGenerator {
         nicknameDao.persist(erikdergute)
         nicknameDao.persist(wahlidierakete)
 
+        val t_programmer = Tag().apply { name="Programmer" }
+        val t_dafak = Tag().apply { name="??!" }
+        val t_context = Tag().apply { name="Was zum Kontext?" }
+
+        tagDao.persist(t_programmer, t_dafak, t_context)
+
         val quotes = arrayOf(
-                Quote().apply { text="Kinan wir ned afoch getBlob() mochn?"; quoter=erik },
-                Quote().apply { text="Mit meine Mutagene undso, jo do werd i voi zur Fledermaus!"; quoter=erik },
-                Quote().apply { text="E: Du bist böse wast du des?\nW: Jo."; quoter=erik }
+                Quote().apply { text="Kinan wir ned afoch getBlob() mochn?"; quoter=erik; tags=listOf(t_programmer) },
+                Quote().apply { text="Mit meine Mutagene undso, jo do werd i voi zur Fledermaus!"; quoter=erik; tags=listOf(t_dafak, t_context) },
+                Quote().apply { text="E: Du bist böse wast du des?\nW: Jo."; quoter=erik; tags=listOf(t_context) }
         )
 
         quotes.forEach { quoteDao.persist(it) }
