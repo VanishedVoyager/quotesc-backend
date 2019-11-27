@@ -2,6 +2,7 @@ package com.silverwyrm.quote.entity
 
 import com.silverwyrm.person.entity.Person
 import com.silverwyrm.quoteperson.entity.QuotePerson
+import com.silverwyrm.review.entity.Review
 import com.silverwyrm.tag.entity.Tag
 import com.silverwyrm.user.entity.QuoteUser
 import javax.persistence.*
@@ -26,4 +27,7 @@ class Quote(
     @JvmSuppressWildcards
     @ManyToMany(targetEntity = Tag::class)
     lateinit var tags: List<Tag>
+
+    @OneToMany(mappedBy = "quote")
+    lateinit var reviews: List<Review>
 }

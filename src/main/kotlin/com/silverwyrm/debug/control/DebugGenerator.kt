@@ -10,6 +10,8 @@ import com.silverwyrm.quote.control.QuoteDao
 import com.silverwyrm.quote.entity.Quote
 import com.silverwyrm.quoteperson.control.QuotePersonDao
 import com.silverwyrm.quoteperson.entity.QuotePerson
+import com.silverwyrm.review.entity.Review
+import com.silverwyrm.review.entity.ReviewDao
 import com.silverwyrm.tag.control.TagDao
 import com.silverwyrm.tag.entity.Tag
 import com.silverwyrm.user.control.UserDao
@@ -51,6 +53,9 @@ open class DebugGenerator {
     @Inject
     open lateinit var tagDao: TagDao
 
+    @Inject
+    open lateinit var reviewDao: ReviewDao
+
     @ConfigProperty(name = "com.silverwyrm.debug.generate-data")
     protected open var generateData: Boolean = false
 
@@ -66,6 +71,7 @@ open class DebugGenerator {
 
         val jan = Person().apply { firstName="Jan"; lastName="Neubauer"; groups=listOf(group_ww, group_htl) }
         val erik = QuoteUser().apply { firstName="Erik"; lastName="Mayerhofer"; sub="eriksGoogleSub"; groups=listOf(group_ww, group_htl) }
+        val felix = QuoteUser().apply { firstName="Felix"; lastName="Drebler"; sub="felixFacebookSub"; groups=listOf(group_ww) }
         val wahli = Person().apply { firstName="Max"; lastName="Wal"; groups=listOf(group_htl) }
 
 
@@ -78,6 +84,7 @@ open class DebugGenerator {
         personDao.add(jan)
         userDao.add(erik)
         personDao.add(wahli)
+        userDao.add(felix)
 
         val janderdenker = Nickname().apply { text="Der Denker" }
         val erikdergm = Nickname().apply { text="Der Gamemaster" }
@@ -110,6 +117,17 @@ open class DebugGenerator {
                 QuotePerson().apply { person=wahli; quote=quotes[2]; nickname=wahlidierakete }
         )
 
+        val reviews = mutableListOf(
+                Review().apply { quote=quotes[0]; user=erik; repeat(4) { upvote() } },
+                Review().apply { quote=quotes[1]; user=erik; repeat(2) { downvote() } },
+                Review().apply { quote=quotes[2]; user=erik; repeat(1) { upvote() } },
+
+                Review().apply { quote=quotes[0]; user=felix; repeat(2) { upvote() } },
+                Review().apply { quote=quotes[1]; user=felix; repeat(2) { upvote() } },
+                Review().apply { quote=quotes[2]; user=felix; repeat(3) { downvote() } }
+        )
+
+        reviewDao.persist(reviews)
 
         quotePerson.forEach { quotePersonDao.persist(it) }
 
