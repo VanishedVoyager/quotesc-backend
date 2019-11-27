@@ -1,11 +1,7 @@
 package com.silverwyrm.person.entity
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.silverwyrm.nickname.entity.Nickname
-import com.silverwyrm.quote.entity.Quote
+import com.silverwyrm.group.entity.Group
 import com.silverwyrm.quoteperson.entity.QuotePerson
-import org.jboss.resteasy.spi.touri.MappedBy
 import javax.persistence.*
 
 @Entity
@@ -24,6 +20,10 @@ open class Person(
 
     @OneToMany(mappedBy = "person", targetEntity = QuotePerson::class)
     open lateinit var quotePersons: List<QuotePerson>
+
+    @JvmSuppressWildcards
+    @ManyToMany(targetEntity = Group::class)
+    open lateinit var groups: List<Group>
 
 //    @JsonIgnoreProperties("person")
 //    @OneToMany(cascade = [CascadeType.MERGE, CascadeType.REFRESH], fetch = FetchType.EAGER, mappedBy = "person")

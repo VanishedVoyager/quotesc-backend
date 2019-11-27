@@ -1,5 +1,7 @@
 package com.silverwyrm.debug.control
 
+import com.silverwyrm.group.control.GroupDao
+import com.silverwyrm.group.entity.Group
 import com.silverwyrm.nickname.control.NicknameDao
 import com.silverwyrm.nickname.entity.Nickname
 import com.silverwyrm.person.control.PersonDao
@@ -11,6 +13,7 @@ import com.silverwyrm.quoteperson.entity.QuotePerson
 import com.silverwyrm.user.control.UserDao
 import com.silverwyrm.user.entity.QuoteUser
 import io.quarkus.arc.config.ConfigProperties
+import io.quarkus.hibernate.orm.panache.Panache
 import io.quarkus.runtime.StartupEvent
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.slf4j.Logger
@@ -19,6 +22,7 @@ import javax.enterprise.context.ApplicationScoped
 import javax.enterprise.context.Initialized
 import javax.enterprise.event.Observes
 import javax.inject.Inject
+import javax.swing.GroupLayout
 import javax.transaction.Transactional
 
 @ApplicationScoped
@@ -39,8 +43,11 @@ open class DebugGenerator {
     @Inject
     open lateinit var quotePersonDao: QuotePersonDao
 
+    @Inject
+    open lateinit var groupDao: GroupDao
+
     @ConfigProperty(name = "com.silverwyrm.debug.generate-data")
-    open var generateData: Boolean = false
+    protected open var generateData: Boolean = false
 
     @Inject
     open lateinit var logger: Logger
@@ -49,9 +56,15 @@ open class DebugGenerator {
     open fun generateSomeData(){
         logger.info("Creating debug Data in Database")
 
-        val jan = Person().apply { firstName="Jan"; lastName="Neubauer" }
-        val erik = QuoteUser().apply { firstName="Erik"; lastName="Mayerhofer"; sub="eriksGoogleSub" }
-        val wahli = Person().apply { firstName="Max"; lastName="Wal" }
+        val group_htl = Group().apply { name="Htl Leonding" }
+        val group_ww = Group().apply { name="White Wyvern" }
+
+        val jan = Person().apply { firstName="Jan"; lastName="Neubauer"; groups=listOf(group_ww, group_htl) }
+        val erik = QuoteUser().apply { firstName="Erik"; lastName="Mayerhofer"; sub="eriksGoogleSub"; groups=listOf(group_ww, group_htl) }
+        val wahli = Person().apply { firstName="Max"; lastName="Wal"; groups=listOf(group_htl) }
+
+
+        groupDao.persist(group_htl, group_ww)
 
 //        jan.nicknames.forEach { nicknameDao.persist(it) }
 //        erik.nicknames.forEach { nicknameDao.persist(it) }
@@ -88,6 +101,8 @@ open class DebugGenerator {
 
 
         quotePerson.forEach { quotePersonDao.persist(it) }
+
+        Panache.getEntityManager().flush()
     }
 
     open fun startupEvent(@Observes event: StartupEvent){
