@@ -21,6 +21,7 @@ import io.quarkus.hibernate.orm.panache.Panache
 import io.quarkus.runtime.StartupEvent
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.slf4j.Logger
+import java.time.LocalDateTime
 import javax.annotation.PostConstruct
 import javax.enterprise.context.ApplicationScoped
 import javax.enterprise.context.Initialized
@@ -70,8 +71,8 @@ open class DebugGenerator {
         val group_ww = Group().apply { name="White Wyvern" }
 
         val jan = Person().apply { firstName="Jan"; lastName="Neubauer"; groups=listOf(group_ww, group_htl) }
-        val erik = QuoteUser().apply { firstName="Erik"; lastName="Mayerhofer"; sub="eriksGoogleSub"; groups=listOf(group_ww, group_htl) }
-        val felix = QuoteUser().apply { firstName="Felix"; lastName="Drebler"; sub="felixFacebookSub"; groups=listOf(group_ww) }
+        val erik = QuoteUser().apply { firstName="Erik"; lastName="Mayerhofer"; subject="eriksGoogleSub"; groups=listOf(group_ww, group_htl) }
+        val felix = QuoteUser().apply { firstName="Felix"; lastName="Drebler"; subject="felixFacebookSub"; groups=listOf(group_ww) }
         val wahli = Person().apply { firstName="Max"; lastName="Wal"; groups=listOf(group_htl) }
 
 
@@ -103,9 +104,9 @@ open class DebugGenerator {
         tagDao.persist(t_programmer, t_dafak, t_context)
 
         val quotes = arrayOf(
-                Quote().apply { text="Kinan wir ned afoch getBlob() mochn?"; quoter=erik; tags=listOf(t_programmer) },
-                Quote().apply { text="Mit meine Mutagene undso, jo do werd i voi zur Fledermaus!"; quoter=erik; tags=listOf(t_dafak, t_context) },
-                Quote().apply { text="E: Du bist böse wast du des?\nW: Jo."; quoter=erik; tags=listOf(t_context) }
+                Quote().apply { text="Kinan wir ned afoch getBlob() mochn?"; quoter=erik; tags=listOf(t_programmer); date= LocalDateTime.now(); brain=8 },
+                Quote().apply { text="Mit meine Mutagene undso, jo do werd i voi zur Fledermaus!"; quoter=erik; tags=listOf(t_dafak, t_context); date= LocalDateTime.now(); brain=3 },
+                Quote().apply { text="E: Du bist böse wast du des?\nW: Jo."; quoter=erik; tags=listOf(t_context); date= LocalDateTime.now(); brain=5 }
         )
 
         quotes.forEach { quoteDao.persist(it) }

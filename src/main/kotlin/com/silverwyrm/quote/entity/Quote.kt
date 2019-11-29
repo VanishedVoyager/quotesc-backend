@@ -5,6 +5,7 @@ import com.silverwyrm.quoteperson.entity.QuotePerson
 import com.silverwyrm.review.entity.Review
 import com.silverwyrm.tag.entity.Tag
 import com.silverwyrm.user.entity.QuoteUser
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -30,4 +31,8 @@ class Quote(
 
     @OneToMany(mappedBy = "quote")
     lateinit var reviews: List<Review>
+
+    lateinit var date: LocalDateTime
+
+    var brain: Int = 0
 }

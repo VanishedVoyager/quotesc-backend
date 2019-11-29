@@ -31,7 +31,7 @@ $pr("brain: Number")
 entity Tag {
 $pk("id: Number")
 --
-$pr("text: String")
+$pr("name: String")
 }
 
 
@@ -40,6 +40,8 @@ $pk("id: Number")
 --
 $pr("score: Number [-5..5]")
 $pr("votes: Number")
+$fk("user_id: Number")
+$fk("quote_id: Number")
 }
 
 
