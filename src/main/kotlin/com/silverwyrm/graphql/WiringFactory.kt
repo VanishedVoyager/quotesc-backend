@@ -1,5 +1,6 @@
 package com.silverwyrm.graphql
 
+import com.silverwyrm.debug.boundary.JwtDataFetchers
 import com.silverwyrm.group.boundary.GroupDataFetchers
 import com.silverwyrm.person.boundary.PersonDataFetchers
 import com.silverwyrm.quote.boundary.QuoteDataFetchers
@@ -30,6 +31,8 @@ open class WiringFactory {
     lateinit var statisticsDataFetchers: StatisticsDataFetchers
     @Inject
     lateinit var tagDataFetchers: TagDataFetchers
+    @Inject
+    lateinit var jwtDataFetchers: JwtDataFetchers
 
     @Produces
     fun runtimeWiring(): RuntimeWiring {
@@ -42,6 +45,7 @@ open class WiringFactory {
                     it.generateWirings(reviewDataFetchers)
                     it.generateWirings(statisticsDataFetchers)
                     it.generateWirings(tagDataFetchers)
+                    it.generateWirings(jwtDataFetchers)
                 }
                 .build()
     }
