@@ -17,7 +17,7 @@ import javax.ws.rs.POST
 import javax.ws.rs.Path
 import javax.ws.rs.core.Response
 
-@Path("/debug")
+//@Path("/debug")
 open class DebugEndpoint {
 
     @Inject

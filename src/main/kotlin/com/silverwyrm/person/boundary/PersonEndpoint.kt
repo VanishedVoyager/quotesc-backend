@@ -6,7 +6,7 @@ import javax.inject.Inject
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
 
-@Path("/persons")
+//@Path("/persons")
 @Produces(MediaType.APPLICATION_JSON)
 class PersonEndpoint {
     @Inject
