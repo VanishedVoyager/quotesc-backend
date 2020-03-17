@@ -1,3 +1,5 @@
+directive @fetch(from : String!) on FIELD_DEFINITION
+
 schema {
     query: Query
     mutation: Mutation
@@ -5,8 +7,62 @@ schema {
 
 type Query {
     ping: String
+    users: [User!]!
+    quotes: [Quote!]!
+    persons: [Person!]!
+    tags: [Tag!]!
+    nickname: [Nickname!]!
+    group: [Group!]!
+    reviews: [Review!]!
+}
+
+type User {
+    subject: String!
+    person: Person!
+}
+
+type Quote {
+    text: String!
+    brain: Int!
+    quoter: Person!
+    persons: [QuotedPerson!]! @fetch(from:"quotePersons")
+}
+
+type QuotedPerson {
+    quote: Quote!
+    person: Person!
+    nickname: Nickname!
+}
+
+type Person {
+    firstName: String!
+    lastName: String!
+    quotes: [QuotedPerson!]! @fetch(from:"quotePersons")
+    user: User
+}
+
+type Tag{
+    name: String
+    quotes: [Quote!]!
+}
+
+type Review {
+    score: Int!
+    votes: Int!
+    user: User!
+    quote: Quote!
+}
+
+type Nickname {
+    text: String!
+    person: Person!
+}
+
+type Group {
+    name: String!
+    persons: [Person!]!
 }
 
 type Mutation {
-
+    upsertMe: User!
 }

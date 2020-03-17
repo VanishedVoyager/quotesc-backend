@@ -5,7 +5,7 @@ import com.silverwyrm.user.entity.QuoteUser
 import javax.persistence.*
 
 @Entity
-@Table(name = "qgroup")
+@Table(name = "quotegroup")
 open class Group(
         @Id
         @GeneratedValue

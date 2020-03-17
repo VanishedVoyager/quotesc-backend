@@ -1,14 +1,13 @@
 package com.silverwyrm.person.entity
 
 import com.silverwyrm.group.entity.Group
+import com.silverwyrm.quote.entity.Quote
 import com.silverwyrm.quoteperson.entity.QuotePerson
+import com.silverwyrm.user.entity.QuoteUser
 import javax.persistence.*
+import kotlin.jvm.Transient
 
 @Entity
-@NamedQueries(
-        NamedQuery(name = "person.findAll", query = "select p from Person p"),
-        NamedQuery(name = "person.countQuotes", query = "select new com.silverwyrm.statistics.entity.PersonStatDto(p, count(q.quote)) from Person p LEFT JOIN p.quotePersons q GROUP BY p.id")
-)
 @Inheritance(strategy = InheritanceType.JOINED)
 open class Person(
         @Id
@@ -24,6 +23,12 @@ open class Person(
     @JvmSuppressWildcards
     @ManyToMany(targetEntity = Group::class)
     open lateinit var groups: List<Group>
+
+    @OneToOne(mappedBy = "person")
+    var user: QuoteUser? = null
+
+//    @delegate:Transient
+//    val quotes: List<Quote> by lazy { quotePersons.map { it.quote } }
 
 //    @JsonIgnoreProperties("person")
 //    @OneToMany(cascade = [CascadeType.MERGE, CascadeType.REFRESH], fetch = FetchType.EAGER, mappedBy = "person")

@@ -5,10 +5,17 @@ import com.silverwyrm.review.entity.Review
 import javax.persistence.*
 
 @Entity
-@NamedQuery(name = "quoteUser.findAll", query = "select u from QuoteUser u")
-open class QuoteUser(id: Long? = null) : Person(id) {
-    open lateinit var subject: String
+class QuoteUser(
+        @Id
+        @Column(name = "id")
+        var id: Long? = null
+)  {
+    lateinit var subject: String
 
     @OneToMany(mappedBy = "user")
-    open lateinit var reviews: List<Review>
+    lateinit var reviews: List<Review>
+
+    @OneToOne
+    @PrimaryKeyJoinColumn(name = "id")
+    lateinit var person: Person
 }

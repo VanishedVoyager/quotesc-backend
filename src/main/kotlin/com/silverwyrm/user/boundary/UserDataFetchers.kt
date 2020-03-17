@@ -1,11 +1,26 @@
 package com.silverwyrm.user.boundary
 
+import com.silverwyrm.graphql.GraphQLField
+import com.silverwyrm.user.control.UserDao
+import com.silverwyrm.user.entity.QuoteUser
 import graphql.schema.DataFetcher
 import javax.enterprise.context.ApplicationScoped
+import javax.inject.Inject
 
 @ApplicationScoped
 class UserDataFetchers {
-    val users = DataFetcher<String> {
+
+    @Inject
+    lateinit var userDao: UserDao
+
+    @GraphQLField("ping")
+    val ping = DataFetcher<String> {
         "Yeet"
     }
+
+    @GraphQLField("users")
+    val users = DataFetcher {
+        userDao.findAll().list<QuoteUser>()
+    }
+
 }
