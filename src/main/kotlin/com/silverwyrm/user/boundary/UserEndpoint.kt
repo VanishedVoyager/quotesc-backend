@@ -10,20 +10,20 @@ import javax.ws.rs.Path
 import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType
 
-@Path("/users")
-@Produces(MediaType.APPLICATION_JSON)
-open class UserEndpoint {
-
-    @Inject
-    open lateinit var userDao: UserDao
-
-    @GET
-    fun findAll(): List<QuoteUser>{
-        return userDao.findAll()
-    }
-
-    @POST
-    fun create(subject: QuoteUser): QuoteUser {
-        return userDao.add(subject)
-    }
-}
+////@Path("/users")
+//@Produces(MediaType.APPLICATION_JSON)
+//open class UserEndpoint {
+//
+//    @Inject
+//    open lateinit var userDao: UserDao
+//
+//    @GET
+//    fun findAll(): List<QuoteUser>{
+//        return userDao.findAll()
+//    }
+//
+//    @POST
+//    fun create(subject: QuoteUser): QuoteUser {
+//        return userDao.add(subject)
+//    }
+//}

@@ -10,22 +10,20 @@ import javax.ws.rs.QueryParam
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
-@Path("nickname")
-@Produces(MediaType.APPLICATION_JSON)
-class NicknameEndpoint {
-
-    @Inject
-    lateinit var nicknameDao: NicknameDao
-
-    @GET
-    open fun getByUser(@QueryParam("user") userId: Long): Response {
-        val list = nicknameDao.findByPersonId(userId);
-        return Response.ok(list).build()
-    }
-
-    @GET
-    open fun getAll(): Response {
-        val list = nicknameDao.findAll().list<Nickname>()
-        return Response.ok(list).build()
-    }
-}
+//@Path("nickname")
+//@Produces(MediaType.APPLICATION_JSON)
+//class NicknameEndpoint {
+//
+//    @Inject
+//    lateinit var nicknameDao: NicknameDao
+//
+//    @GET
+//    open fun getByUser(@QueryParam("user") userId: Long?): Response {
+//        if(userId == null){
+//            val list = nicknameDao.findAll().list<Nickname>()
+//            return Response.ok(list).build()
+//        }
+//        val list = nicknameDao.findByPersonId(userId);
+//        return Response.ok(list).build()
+//    }
+//}

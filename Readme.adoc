@@ -3,6 +3,8 @@
 :source-highlighter: coderay
 :toc:
 Erik Mayrhofer <obyoxar@gmail.com>
+:repolink: VanishedWanderer/quotesc-backend/master
+:diagram-proxy: http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/{repolink}
 
 == General Overview
 As a basis for this assignment, I decided not to use my previous projects, because first I didn't
@@ -15,7 +17,13 @@ and recently I started working on it.
 The long term idea is to transform our current solution for keeping track of funny quotes (a google-form
 connected to a spreadsheet) to a progressive web-app.
 
-
+== ERD
+ifdef::env-github[]
+image::{diagram-proxy}/doc/erd.puml[Please wait for diagram to be merged into master]
+endif::[]
+ifndef::env-github[]
+plantuml::doc/erd.puml[]
+endif::[]
 
 == Class Diagram
 [plantuml]

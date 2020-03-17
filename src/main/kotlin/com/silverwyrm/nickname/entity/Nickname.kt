@@ -13,8 +13,5 @@ class Nickname(
         @GeneratedValue
         public var id: Long? = null
 ) {
-    @ManyToOne(cascade = [CascadeType.MERGE, CascadeType.REFRESH])
-    lateinit var person: Person
-
     lateinit var text: String
 }
