@@ -1,6 +1,7 @@
 package com.silverwyrm.person.entity
 
 import com.silverwyrm.group.entity.Group
+import com.silverwyrm.nickname.entity.Nickname
 import com.silverwyrm.quote.entity.Quote
 import com.silverwyrm.quoteperson.entity.QuotePerson
 import com.silverwyrm.user.entity.QuoteUser
@@ -26,6 +27,10 @@ class Person(
 
     @OneToOne(mappedBy = "person")
     var user: QuoteUser? = null
+
+//
+//    @delegate:Transient
+//    val nicknames: List<Nickname> by lazy { quotePersons.map { it.nickname } }
 
 //    @delegate:Transient
 //    val quotes: List<Quote> by lazy { quotePersons.map { it.quote } }

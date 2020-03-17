@@ -4,10 +4,12 @@ import com.silverwyrm.debug.boundary.JwtDataFetchers
 import com.silverwyrm.group.boundary.GroupDataFetchers
 import com.silverwyrm.person.boundary.PersonDataFetchers
 import com.silverwyrm.quote.boundary.QuoteDataFetchers
+import com.silverwyrm.quote.boundary.QuoteDataMutator
 import com.silverwyrm.review.boundary.ReviewDataFetchers
 import com.silverwyrm.statistics.boundary.StatisticsDataFetchers
 import com.silverwyrm.tag.boundary.TagDataFetchers
 import com.silverwyrm.user.boundary.UserDataFetchers
+import com.silverwyrm.user.boundary.UserDataMutators
 import graphql.schema.DataFetcher
 import graphql.schema.idl.RuntimeWiring
 import javax.enterprise.context.ApplicationScoped
@@ -20,11 +22,15 @@ open class WiringFactory {
     @Inject
     lateinit var userDataFetchers: UserDataFetchers
     @Inject
+    lateinit var userDataMutators: UserDataMutators
+    @Inject
     lateinit var groupDataFetchers: GroupDataFetchers
     @Inject
     lateinit var personDataFetchers: PersonDataFetchers
     @Inject
     lateinit var quoteDataFetchers: QuoteDataFetchers
+    @Inject
+    lateinit var quoteDataMutator: QuoteDataMutator
     @Inject
     lateinit var reviewDataFetchers: ReviewDataFetchers
     @Inject
@@ -47,6 +53,15 @@ open class WiringFactory {
                     it.generateWirings(tagDataFetchers)
                     it.generateWirings(jwtDataFetchers)
                 }
+                .type("Mutation"){
+                    it.generateWirings(userDataMutators)
+                    it.dataFetcher("quote") { Empty() }
+                }
+                .type("QuoteMutator"){
+                    it.generateWirings(quoteDataMutator)
+                }
                 .build()
     }
 }
+
+class Empty
