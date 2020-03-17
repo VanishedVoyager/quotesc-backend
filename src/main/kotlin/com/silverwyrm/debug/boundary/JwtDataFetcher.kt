@@ -14,7 +14,6 @@ class JwtDataFetchers {
     lateinit var securityIdentity: SecurityIdentity
 
     val pingJwt = DataFetcher {
-        print("Yeet")
         val jwt = securityIdentity.principal as DefaultJWTCallerPrincipal
         JwtDTO(jwt.subject, jwt.name)
     }
