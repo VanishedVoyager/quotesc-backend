@@ -7,7 +7,6 @@ import javax.xml.crypto.Data
 import kotlin.reflect.KType
 import kotlin.reflect.KTypeProjection
 import kotlin.reflect.full.*
-import kotlin.reflect.typeOf
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.PROPERTY)
