@@ -7,6 +7,7 @@ schema {
 
 type Query {
     ping: String
+    pingJwt: DebugJwt
     users: [User!]!
     quotes: [Quote!]!
     persons: [Person!]!
@@ -14,6 +15,11 @@ type Query {
     nickname: [Nickname!]!
     group: [Group!]!
     reviews: [Review!]!
+}
+
+type DebugJwt {
+    subject: String
+    name: String
 }
 
 type User {

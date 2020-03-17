@@ -4,6 +4,7 @@ import com.silverwyrm.graphql.GraphQLField
 import com.silverwyrm.user.control.UserDao
 import com.silverwyrm.user.entity.QuoteUser
 import graphql.schema.DataFetcher
+import io.quarkus.security.identity.SecurityIdentity
 import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
 
