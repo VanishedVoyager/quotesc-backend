@@ -61,6 +61,7 @@ open class DebugGenerator {
 
     @Transactional
     open fun generateSomeData(){
+
         logger.info("Creating debug Data in Database")
 
         val group_htl = Group().apply { name="Htl Leonding" }
@@ -142,5 +143,10 @@ open class DebugGenerator {
         if(generateData){
             generateSomeData()
         }
+
+
+        println("Trying to load schema.")
+        val stream = javaClass.getResourceAsStream("/schema.graphqls")
+        println(stream)
     }
 }

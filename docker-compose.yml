@@ -22,11 +22,22 @@ services:
     networks:
       - quotesc-net
 
-  quotesc:
+  quotesc-build:
     build:
       context: .
       dockerfile: src/main/docker/Dockerfile.jvm
     networks:
       - quotesc-net
+    ports:
+      - 8080:8080
+
+  quotesc:
+    image: quotesc-backend:latest
+    networks:
+      - quotesc-net
+    environment:
+      - OIDC_SERVER=https://auth.obyoxion.at/auth/realms/quotesc
+      - OIDC_CLIENT_ID=quotesc-backend
+      - OIDC_SECRET=cf6a353d9-df3b-4503-8292-8e1a6bef296f
     ports:
       - 8080:8080
