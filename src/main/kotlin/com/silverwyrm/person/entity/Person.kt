@@ -10,7 +10,7 @@ import kotlin.jvm.Transient
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-class Person(
+open class Person(
         @Id
         @GeneratedValue
         public var id: Long? = null

@@ -8,7 +8,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase
 import javax.persistence.*
 
 @Entity
-class Nickname(
+open class Nickname(
         @Id
         @GeneratedValue
         public var id: Long? = null

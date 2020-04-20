@@ -5,14 +5,14 @@ import com.silverwyrm.review.entity.Review
 import javax.persistence.*
 
 @Entity
-class QuoteUser(
+open class QuoteUser(
         @Id
         @Column(name = "id")
         var id: Long? = null
 )  {
     lateinit var subject: String
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", targetEntity = Review::class)
     lateinit var reviews: List<Review>
 
     @OneToOne

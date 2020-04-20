@@ -9,7 +9,10 @@ type Query {
     ping: String
     pingJwt: DebugJwt
     users: [User!]!
+
     quotes: [Quote!]!
+    quote(id: Int!): Quote
+
     persons: [Person!]!
     tags: [Tag!]!
     nickname: [Nickname!]!

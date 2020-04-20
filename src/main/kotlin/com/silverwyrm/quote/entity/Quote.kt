@@ -11,7 +11,7 @@ import javax.persistence.*
 import kotlin.jvm.Transient
 
 @Entity
-class Quote(
+open class Quote(
         @Id
         @GeneratedValue
         public var id: Long? = null
@@ -31,7 +31,7 @@ class Quote(
     @ManyToMany(targetEntity = Tag::class)
     lateinit var tags: List<Tag>
 
-    @OneToMany(mappedBy = "quote")
+    @OneToMany(mappedBy = "quote", targetEntity = Review::class)
     lateinit var reviews: List<Review>
 
     lateinit var date: LocalDateTime

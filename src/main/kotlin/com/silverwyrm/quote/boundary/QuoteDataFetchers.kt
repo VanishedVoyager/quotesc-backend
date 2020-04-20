@@ -1,7 +1,6 @@
 package com.silverwyrm.quote.boundary
 
-import com.silverwyrm.graphql.GraphQLField
-import com.silverwyrm.graphql.TransactionalDataFetcher
+import com.silverwyrm.graphql.*
 import com.silverwyrm.nickname.control.NicknameDao
 import com.silverwyrm.nickname.entity.Nickname
 import com.silverwyrm.person.control.PersonDao
@@ -23,6 +22,12 @@ class QuoteDataFetchers {
     val quotes = DataFetcher {
         quoteDao.findAll().list<Quote>()
     }
+
+    @GraphQLField("quote")
+    val quote = DataFetcher {
+        val id = it.arguments["id"] as Int
+        quoteDao.findById(id.toLong())
+    }
 }
 
 @ApplicationScoped
@@ -43,12 +48,12 @@ class QuoteDataMutator {
     lateinit var userDao: UserDao
 
     val create = TransactionalDataFetcher { env ->
-        val rawInput = env.getArgument<LinkedHashMap<String, Any>>("quote")
+        val rawInput = env.getArgument<GraphQlObject>("quote")
 
         val input = QuoteCreationInput().apply {
-            text = rawInput["text"] as String
-            brain = rawInput["brain"] as Int
-            persons = (rawInput["persons"] as List<LinkedHashMap<String, Any>>).map { pers ->
+            text = rawInput.getString("text")
+            brain = rawInput.getInt("brain")
+            persons = (rawInput.getObjectList("persons")).map { pers ->
                 NicknamedPersonInput().apply {
                     personId = (pers["personId"] as Int).toLong()
                     nickname = pers["nickname"] as String

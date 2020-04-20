@@ -8,7 +8,7 @@ import javax.persistence.*
 
 @Entity
 @IdClass(QuotePersonId::class)
-class QuotePerson(
+open class QuotePerson(
 ) {
     @Id
     @ManyToOne(targetEntity = Quote::class)

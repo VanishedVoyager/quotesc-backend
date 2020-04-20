@@ -50,6 +50,11 @@
       <version>1.0.2-SNAPSHOT</version>
     </dependency>
     <dependency>
+      <groupId>com.graphql-java</groupId>
+      <artifactId>graphql-java</artifactId>
+      <version>13.0</version>
+    </dependency>
+    <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy</artifactId>
     </dependency>
@@ -196,6 +201,7 @@
             <version>${kotlin.version}</version>
           </dependency>
         </dependencies>
+
         <configuration>
           <compilerPlugins>
             <plugin>all-open</plugin>
@@ -204,8 +210,10 @@
             <option>all-open:annotation=javax.ws.rs.Path</option>
             <option>all-open:annotation=javax.enterprise.context.ApplicationScoped</option>
             <option>all-open:annotation=io.quarkus.test.junit.QuarkusTest</option>
+            <option>all-open:annotation=javax.persistence.Entity</option>
           </pluginOptions>
         </configuration>
+
       </plugin>
 
 

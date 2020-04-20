@@ -10,7 +10,7 @@ import kotlin.math.min
 
 @Entity
 @Check(constraints = "score BETWEEN -5 AND 5")
-class Review(
+open class Review(
         @Id
         @GeneratedValue
         public var id: Long? = null
